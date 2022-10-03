@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Alife</string>
+    <string name="main_graph">MainGraph</string>
+    <string name="setting_graph">SettingGraph</string>
+    <string name="shopping_screen">Shopping</string>
+    <string name="home_screen">Home</string>
+    <string name="calendar_screen">Calendar</string>
+    <string name="setting_gender_screen">SettingGenderScreen</string>
+    <string name="setting_exercise_screen">SettingExerciseScreen</string>
+    <string name="setting_dietdirection_screen">SettingDietDirectionScreen</string>
+</resources>

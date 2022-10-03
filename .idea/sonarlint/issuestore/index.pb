@@ -1,0 +1,23 @@
+
+c
+3app/src/main/java/com/alife/vegan/ui/theme/Shape.kt,4\9\491657fdbc22a69c751f0b89ff0e014138232593
+X
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+x
+Happ/src/main/java/com/alife/vegan/ui/calendar/components/CalendarItem.kt,f\e\fea693870c46547ceaa90160355170c372047860
+u
+Eapp/src/main/java/com/alife/vegan/ui/setting/SettingExerciseScreen.kt,2\b\2b7a6558701e03e531b8092f9ce6b73a2f951c86
+z
+Japp/src/main/java/com/alife/vegan/ui/setting/SettingDietdirectionScreen.kt,c\7\c7fb0e683a8587d2249ed0ee5f3ef5a0c643c4ea
+n
+>app/src/main/java/com/alife/vegan/ui/shpping/ShoppingScreen.kt,2\4\24969aacbc625326bad6b434c0d9975eed3b48b7
+c
+3app/src/main/java/com/alife/vegan/ui/theme/Color.kt,1\a\1a3b9d248280eb531737bf492c4355781fa215ae
+s
+Capp/src/main/java/com/alife/vegan/ui/setting/SettingGenderScreen.kt,4\b\4b9885eaeb50e0f385900a1b9b96699e24f52275
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+]
+-app/src/main/java/com/alife/vegan/VegunApp.kt,f\d\fd75aeb59923b93471dff414cf188aac3fa252d6
+{
+Kapp/src/main/java/com/alife/vegan/data/repository/CalendarRepositoryImpl.kt,5\a\5a5746c05fe3553abd23c01cde15418c8593ea6b
