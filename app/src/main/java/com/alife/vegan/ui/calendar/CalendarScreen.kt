@@ -62,7 +62,6 @@ fun CalendarScreen(
   val clickedDate = remember {
     mutableStateOf(dayList.first())
   }
-
   Surface(modifier = Modifier.fillMaxSize()) {
     Column {
       Row(
@@ -159,7 +158,6 @@ fun DietList() {
 
 @Composable
 fun DietListItem() {
-
   Column {
     Spacer(modifier = Modifier.height(20.dp))
     Text(text = "아침", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xff707070))
