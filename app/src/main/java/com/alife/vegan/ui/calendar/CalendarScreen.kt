@@ -32,7 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.alife.vegan.R
 import com.alife.vegan.ui.calendar.Dummy.dayList
 import com.alife.vegan.ui.calendar.Dummy.dummyFood
-import com.alife.vegan.ui.calendar.components.CalendarItem
+import com.alife.vegan.ui.components.CalendarItem
 import com.alife.vegan.ui.theme.AlifeTheme
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
 
@@ -131,7 +131,7 @@ fun CalendarScreen(
 @Composable
 fun DietListContainer(value: List<Pair<String, String>>) {
   val isEmpty = false
-  if (value.isEmpty()) {
+  if (!value.isEmpty()) {
     EmptyDiet()
   } else {
     DietList()

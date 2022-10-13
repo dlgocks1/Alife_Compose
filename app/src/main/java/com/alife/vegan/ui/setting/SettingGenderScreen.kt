@@ -17,7 +17,6 @@ fun SettingGenderScreen(navController: NavController) {
     Text(text = "Gender Setting")
     Button(onClick = {
       navController.navigate("setting_exercise")
-
     }) {
       Text(text = "다음")
     }

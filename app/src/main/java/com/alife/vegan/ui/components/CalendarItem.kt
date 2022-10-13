@@ -1,4 +1,4 @@
-package com.alife.vegan.ui.calendar.components
+package com.alife.vegan.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
