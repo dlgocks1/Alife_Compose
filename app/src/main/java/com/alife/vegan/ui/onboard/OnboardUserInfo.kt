@@ -1,5 +1,6 @@
-package com.alife.vegan.ui.setting
+package com.alife.vegan.ui.onboard
 
+import android.widget.RadioGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -16,11 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.alife.vegan.R
-import com.alife.vegan.ui.Screen
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
+import com.alife.vegan.ui.theme.Color_Alife_Green
 
 @Composable
-fun SettingGenderScreen(navController: NavController) {
+fun OnboardUserInfo(navController: NavController = rememberNavController()) {
 
     val gender = remember {
         mutableStateOf("Male")
@@ -34,35 +35,20 @@ fun SettingGenderScreen(navController: NavController) {
             )
         }
     ) {
-        Column() {
-
-            GenderSelect(gender)
+        GenderSelect(gender)
 //        BodySelect()
-            Text(text = "키와 체중을 입력하세요.")
-            Row(modifier = Modifier.fillMaxWidth()) {
-                TextField(value = "", onValueChange = {}, label = {
-                    Text(text = "키")
-                }, modifier = Modifier.weight(1f))
-            }
-            Row(modifier = Modifier.fillMaxWidth()) {
-                TextField(value = "", onValueChange = {}, label = {
-                    Text(text = "체중")
-                }, modifier = Modifier.weight(1f))
-            }
+        Text(text = "키와 체중을 입력하세요.")
+        Row(modifier = Modifier.fillMaxWidth()) {
+            TextField(value = "", onValueChange = {}, label = {
+                Text(text = "키")
+            }, modifier = Modifier.weight(1f))
         }
-
+        Row(modifier = Modifier.fillMaxWidth()) {
+            TextField(value = "", onValueChange = {}, label = {
+                Text(text = "체중")
+            }, modifier = Modifier.weight(1f))
+        }
     }
-//  Column() {
-//    Button(onClick = { navController.popBackStack() }) {
-//      Text(text = "뒤로가기")
-//    }
-//    Text(text = "Gender Setting")
-//    Button(onClick = {
-//      navController.navigate("setting_exercise")
-//    }) {
-//      Text(text = "다음")
-//    }
-//  }
 }
 
 @Composable
