@@ -8,4 +8,5 @@
     <string name="setting_gender_screen">SettingGenderScreen</string>
     <string name="setting_exercise_screen">SettingExerciseScreen</string>
     <string name="setting_dietdirection_screen">SettingDietDirectionScreen</string>
+    <string name="setting_allergy">SettingAllergy</string>
 </resources>
