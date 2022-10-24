@@ -11,4 +11,7 @@ class SettingDietViewModel : ViewModel() {
     val exercise = mutableStateOf("Middle")
     val foodCategory = mutableStateOf(listOf<String>())
     val foodAllergy = mutableStateOf(listOf<String>())
+    val vegunCategory = mutableStateOf(listOf<String>())
+    val dietDirection = mutableStateOf(listOf<String>())
+
 }

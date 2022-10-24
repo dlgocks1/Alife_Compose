@@ -29,4 +29,12 @@ sealed class Screen(
 
     object SettingAllergy :
         Screen("setting_allergy", R.string.setting_dietdirection_screen)
+
+    object SettingVegunCategory :
+        Screen("setting_vegun_category", R.string.setting_dietdirection_screen)
+
+    object SettingFoodCategory :
+        Screen("setting_food_category", R.string.setting_food_category)
+
+
 }

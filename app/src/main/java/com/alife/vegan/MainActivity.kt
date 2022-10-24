@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -29,10 +30,7 @@ import com.alife.vegan.ui.Screen
 import com.alife.vegan.ui.calendar.CalendarScreen
 import com.alife.vegan.ui.calendar.CalendarViewModel
 import com.alife.vegan.ui.home.HomeScreen
-import com.alife.vegan.ui.setting.SettingAllergy
-import com.alife.vegan.ui.setting.SettingFoodCategoryScreen
-import com.alife.vegan.ui.setting.SettingExerciseScreen
-import com.alife.vegan.ui.setting.SettingGenderScreen
+import com.alife.vegan.ui.setting.*
 import com.alife.vegan.ui.shpping.ShoppingScreen
 import com.alife.vegan.ui.theme.AlifeTheme
 import com.alife.vegan.ui.theme.Color_Alife_C4C4C4
@@ -79,7 +77,7 @@ private fun RootNavhost(navController: NavHostController, bottomBarState: Mutabl
         Screen.Shopping,
     )
     Scaffold(
-        bottomBar = { ButtomBar(navController, bottomNavItems, bottomBarState) }
+        bottomBar = { ButtomNavigation(navController, bottomNavItems, bottomBarState) }
     ) { innerPadding ->
 
         val calendarViewModel: CalendarViewModel = hiltViewModel()
@@ -101,7 +99,7 @@ private fun RootNavhost(navController: NavHostController, bottomBarState: Mutabl
 }
 
 @Composable
-private fun ButtomBar(
+private fun ButtomNavigation(
     navController: NavHostController,
     bottomNavItems: List<Screen>,
     bottomBarState: MutableState<Boolean>
@@ -131,16 +129,10 @@ private fun ButtomBar(
                     selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                     onClick = {
                         navController.navigate(screen.route) {
-                            // Pop up to the start destination of the graph to
-                            // avoid building up a large stack of destinations
-                            // on the back stack as users select items
                             popUpTo(navController.graph.findStartDestination().id) {
                                 saveState = true
                             }
-                            // Avoid multiple copies of the same destination when
-                            // reselecting the same item
                             launchSingleTop = true
-                            // Restore state when reselecting a previously selected item
                             restoreState = true
                         }
                     },
@@ -167,10 +159,48 @@ fun NavGraphBuilder.mainGraph(navController: NavController, calendarViewModel: C
 
 fun NavGraphBuilder.settingGraph(navController: NavController) {
     navigation(startDestination = Screen.SettingGender.route, route = "SettingGraph") {
-        composable(Screen.SettingGender.route) { SettingGenderScreen(navController) }
-        composable(Screen.SettingExercise.route) { SettingExerciseScreen(navController) }
-        composable(Screen.SettingDietDirection.route) { SettingFoodCategoryScreen(navController) }
-        composable(Screen.SettingAllergy.route) { SettingAllergy(navController) }
+        composable(Screen.SettingGender.route) {
+            val settingDietViewModel: SettingDietViewModel =
+                GenerateSettingViewModel(it, navController)
+            SettingGenderScreen(navController, settingDietViewModel)
+        }
+        composable(Screen.SettingExercise.route) {
+            val settingDietViewModel: SettingDietViewModel =
+                GenerateSettingViewModel(it, navController)
+            SettingExerciseScreen(navController, settingDietViewModel)
+        }
+        composable(Screen.SettingFoodCategory.route) {
+            val settingDietViewModel: SettingDietViewModel =
+                GenerateSettingViewModel(it, navController)
+            SettingFoodCategoryScreen(navController, settingDietViewModel)
+        }
+        composable(Screen.SettingAllergy.route) {
+            val settingDietViewModel: SettingDietViewModel =
+                GenerateSettingViewModel(it, navController)
+            SettingAllergy(navController, settingDietViewModel)
+        }
+        composable(Screen.SettingVegunCategory.route) {
+            val settingDietViewModel: SettingDietViewModel =
+                GenerateSettingViewModel(it, navController)
+            SettingVegunCategoryScreen(navController, settingDietViewModel)
+        }
+        composable(Screen.SettingDietDirection.route) {
+            val settingDietViewModel: SettingDietViewModel =
+                GenerateSettingViewModel(it, navController)
+            SettingDietDirectionScreen(navController, settingDietViewModel)
+        }
     }
 }
+
+@Composable
+private fun GenerateSettingViewModel(
+    it: NavBackStackEntry,
+    navController: NavController
+): SettingDietViewModel {
+    val backStackEntry = remember(it) {
+        navController.getBackStackEntry("SettingGraph")
+    }
+    return hiltViewModel(backStackEntry)
+}
+
 

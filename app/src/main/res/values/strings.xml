@@ -8,5 +8,8 @@
     <string name="setting_gender_screen">SettingGenderScreen</string>
     <string name="setting_exercise_screen">SettingExerciseScreen</string>
     <string name="setting_dietdirection_screen">SettingDietDirectionScreen</string>
+    <string name="setting_food_category">SettingFoodCategory</string>
+    <string name="setting_vegun_category_screen">SettingVegunCategoryScreen</string>
     <string name="setting_allergy">SettingAllergy</string>
+    <string name="select_vegun_category">채식 카테고리를 선택해주세요.</string>
 </resources>
