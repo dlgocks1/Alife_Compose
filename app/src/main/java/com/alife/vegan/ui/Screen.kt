@@ -36,5 +36,10 @@ sealed class Screen(
     object SettingFoodCategory :
         Screen("setting_food_category", R.string.setting_food_category)
 
+    object RegisterDietBudget :
+        Screen("register_diet_budget", R.string.registesr_diet_budget)
+
+    object RegisterDietFood :
+        Screen("register_diet_food", R.string.registesr_diet_food)
 
 }

@@ -30,6 +30,9 @@ import com.alife.vegan.ui.Screen
 import com.alife.vegan.ui.calendar.CalendarScreen
 import com.alife.vegan.ui.calendar.CalendarViewModel
 import com.alife.vegan.ui.home.HomeScreen
+import com.alife.vegan.ui.navigation.mainGraph
+import com.alife.vegan.ui.navigation.registerDiet
+import com.alife.vegan.ui.navigation.settingGraph
 import com.alife.vegan.ui.setting.*
 import com.alife.vegan.ui.shpping.ShoppingScreen
 import com.alife.vegan.ui.theme.AlifeTheme
@@ -94,6 +97,9 @@ private fun RootNavhost(navController: NavHostController, bottomBarState: Mutabl
             settingGraph(
                 navController = navController
             )
+            registerDiet(
+                navController = navController
+            )
         }
     }
 }
@@ -142,65 +148,6 @@ private fun ButtomNavigation(
             }
         }
     }
-}
-
-fun NavGraphBuilder.mainGraph(navController: NavController, calendarViewModel: CalendarViewModel) {
-    navigation(startDestination = Screen.Calendar.route, route = "MainGraph") {
-        composable(Screen.Calendar.route) {
-            CalendarScreen(
-                viewModel = calendarViewModel,
-                navController = navController
-            )
-        }
-        composable(Screen.Home.route) { HomeScreen() }
-        composable(Screen.Shopping.route) { ShoppingScreen() }
-    }
-}
-
-fun NavGraphBuilder.settingGraph(navController: NavController) {
-    navigation(startDestination = Screen.SettingGender.route, route = "SettingGraph") {
-        composable(Screen.SettingGender.route) {
-            val settingDietViewModel: SettingDietViewModel =
-                GenerateSettingViewModel(it, navController)
-            SettingGenderScreen(navController, settingDietViewModel)
-        }
-        composable(Screen.SettingExercise.route) {
-            val settingDietViewModel: SettingDietViewModel =
-                GenerateSettingViewModel(it, navController)
-            SettingExerciseScreen(navController, settingDietViewModel)
-        }
-        composable(Screen.SettingFoodCategory.route) {
-            val settingDietViewModel: SettingDietViewModel =
-                GenerateSettingViewModel(it, navController)
-            SettingFoodCategoryScreen(navController, settingDietViewModel)
-        }
-        composable(Screen.SettingAllergy.route) {
-            val settingDietViewModel: SettingDietViewModel =
-                GenerateSettingViewModel(it, navController)
-            SettingAllergy(navController, settingDietViewModel)
-        }
-        composable(Screen.SettingVegunCategory.route) {
-            val settingDietViewModel: SettingDietViewModel =
-                GenerateSettingViewModel(it, navController)
-            SettingVegunCategoryScreen(navController, settingDietViewModel)
-        }
-        composable(Screen.SettingDietDirection.route) {
-            val settingDietViewModel: SettingDietViewModel =
-                GenerateSettingViewModel(it, navController)
-            SettingDietDirectionScreen(navController, settingDietViewModel)
-        }
-    }
-}
-
-@Composable
-private fun GenerateSettingViewModel(
-    it: NavBackStackEntry,
-    navController: NavController
-): SettingDietViewModel {
-    val backStackEntry = remember(it) {
-        navController.getBackStackEntry("SettingGraph")
-    }
-    return hiltViewModel(backStackEntry)
 }
 
 
