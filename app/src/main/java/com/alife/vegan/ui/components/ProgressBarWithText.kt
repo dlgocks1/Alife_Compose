@@ -27,7 +27,8 @@ fun ProgresBarWithText(infoList: List<String>) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(18.dp)
+                    .height(18.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = it,

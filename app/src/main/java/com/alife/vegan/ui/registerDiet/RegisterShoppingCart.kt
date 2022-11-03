@@ -1,9 +1,10 @@
 package com.alife.vegan.ui.onboard
 
+import android.widget.Space
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.RowScopeInstance.weight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -27,6 +29,7 @@ import com.alife.vegan.ui.components.FoodItem
 import com.alife.vegan.ui.components.ProgresBarWithText
 import com.alife.vegan.ui.components.TitleText
 import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
+import com.alife.vegan.ui.theme.Color_Alif_707070
 import com.alife.vegan.ui.theme.Color_Alif_Gray
 import com.alife.vegan.ui.theme.Color_Alif_GrayBackground
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
@@ -39,13 +42,14 @@ fun RegisterShoppingCart(
     Column() {
         Column(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(20.dp, 0.dp)
                 .weight(1f)
+                .verticalScroll(rememberScrollState())
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp, 10.dp)
+                    .padding(10.dp, 10.dp)
             ) {
                 TitleText(text = "식단 장바구니", color = Color_Alife_Cyan, fontSize = 28.sp)
             }
@@ -53,19 +57,44 @@ fun RegisterShoppingCart(
                 text = "선택 상품 N개",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(20.dp, 10.dp)
+                modifier = Modifier.padding(10.dp, 0.dp)
             )
+            Spacer(modifier = Modifier.height(20.dp))
             for (i in 0..5) {
                 ShoppingCartItem()
             }
         }
-        Row(
+
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp, 0.dp)
+                .padding(20.dp, 0.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Button(onClick = { /*TODO*/ }, modifier = Modifier.weight(1f)) {
-                Text(text = "구매하기")
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = "상품 금액", fontSize = 16.sp, color = Color_Alif_707070)
+                Text(text = "24,000원", fontSize = 16.sp, color = Color_Alif_707070)
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = "칼로리", fontSize = 16.sp, color = Color_Alif_707070)
+                Text(text = "1,840 Kcal", fontSize = 16.sp, color = Color_Alif_707070)
+            }
+            Button(
+                onClick = { /*TODO*/ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(20.dp)),
+                colors = ButtonDefaults.buttonColors(Color_Alife_Cyan)
+            ) {
+                Text(text = "구매하기", color = Color.White, fontSize = 16.sp)
             }
         }
     }
@@ -74,7 +103,13 @@ fun RegisterShoppingCart(
 @Composable
 private fun ShoppingCartItem() {
     Column {
-        Text(text = "상품 이름")
+        Text(
+            text = "상품 이름",
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = Color(0xff707070)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
             Card(
                 modifier = Modifier.size(80.dp),
@@ -85,21 +120,26 @@ private fun ShoppingCartItem() {
                     painterResource(R.drawable.img_dummy),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.size(80.dp)
                 )
             }
+            Spacer(modifier = Modifier.width(20.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Row(
-                    modifier = Modifier.weight(1f),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(text = "5,000원 | 120g")
-                        Text(text = "250kcal")
+                        Text(text = "5,000원 | 120g", color = Color_Alif_707070, fontSize = 14.sp)
+                        Text(text = "250kcal", color = Color_Alif_707070, fontSize = 14.sp)
                     }
                     Checkbox(checked = true, onCheckedChange = {})
                 }
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp, 0.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Button(onClick = { /*TODO*/ }) {
                         Text(text = "아침")
                     }

@@ -60,7 +60,8 @@ private fun RootIndex() {
         "home", "calendar", "shopping" -> {
             bottomBarState.value = true
         }
-        "setting_gender", "setting_exercise", "setting_diet_direction" -> {
+        "setting_gender", "setting_exercise", "setting_diet_direction",
+        "register_diet_budget", "register_diet_food" -> {
             bottomBarState.value = false
         }
     }

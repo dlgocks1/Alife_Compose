@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.alife.vegan.ui.components.FoodItem
 import com.alife.vegan.ui.components.ProgresBarWithText
 import com.alife.vegan.ui.components.TitleText
 import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
@@ -33,28 +34,31 @@ fun RegisterDietFoodScreen(
 
         Column(
             modifier = Modifier
-                .padding(20.dp)
-                .weight(1f)
+              .padding(20.dp)
+              .weight(1f)
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp, 10.dp)
+                  .fillMaxWidth()
+                  .padding(20.dp, 10.dp)
             ) {
-                TitleText(text = "ㅇ월 ㅇㅇ일", color = Color_Alife_Cyan, fontSize = 28.sp)
-                TitleText(text = "식단을 선택해주세요.")
+                TitleText(text = "ㅇ월 ㅇㅇ일", color = Color_Alife_Cyan, fontSize = 18.sp)
+                TitleText(text = "식단을 선택해주세요.", fontSize = 18.sp)
             }
+
             Column(modifier = Modifier.padding(20.dp)) {
                 ProgresBarWithText(infoList = listOf("남은 예산"))
             }
+
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .background(color = Color_Alif_GrayBackground)
-                    .verticalScroll(rememberScrollState())
+                  .fillMaxWidth()
+                  .weight(1f)
+                  .background(color = Color_Alif_GrayBackground)
+                  .verticalScroll(rememberScrollState())
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
+
                 // 추천 리스트
                 Card(
                     shape = RoundedCornerShape(15),
@@ -63,18 +67,20 @@ fun RegisterDietFoodScreen(
                 ) {
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
+                          .fillMaxWidth()
+                          .padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(
                             10.dp,
                             Alignment.CenterVertically
                         )
                     ) {
+                        // 더미데이터 리스트 추가
                         for (i in 0..8) {
-                            com.alife.vegan.ui.components.FoodItem()
+                            FoodItem()
                         }
                     }
                 }
+
                 // 넣을수록 이득인 음식
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(text = "넣을수록 이득인 음식", fontSize = 20.sp, fontWeight = FontWeight.Bold)
@@ -87,8 +93,8 @@ fun RegisterDietFoodScreen(
                 ) {
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
+                          .fillMaxWidth()
+                          .padding(20.dp),
                         verticalArrangement = Arrangement.spacedBy(
                             10.dp,
                             Alignment.CenterVertically
@@ -104,8 +110,8 @@ fun RegisterDietFoodScreen(
         }
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(Color_Alife_Cyan)
+              .fillMaxWidth()
+              .background(Color_Alife_Cyan)
         ) {
             Text(
                 text = "Total : 000kcal",
