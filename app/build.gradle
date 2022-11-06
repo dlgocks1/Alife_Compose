@@ -74,8 +74,8 @@ dependencies {
     implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.38.1"
-    kapt "com.google.dagger:hilt-compiler:2.38.1"
+    implementation "com.google.dagger:hilt-android:2.38"
+    kapt "com.google.dagger:hilt-compiler:2.38"
 
     // Hilt Navigation
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
@@ -86,5 +86,10 @@ dependencies {
     // Flex Layout
     implementation "com.google.accompanist:accompanist-flowlayout:0.15.0"
 
+    /* network 라이브러리 */
+    implementation 'com.github.skydoves:sandwich:1.2.6'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3'
 
 }

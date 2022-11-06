@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -25,6 +23,9 @@ import com.alife.vegan.ui.components.CustomTextField
 import com.alife.vegan.ui.components.FillWidthButton
 import com.alife.vegan.ui.components.TitleText
 import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
+import com.alife.vegan.ui.theme.Color_Alif_707070
+import com.alife.vegan.ui.theme.Color_Alif_Gray
+import com.alife.vegan.ui.theme.Color_Alife_C4C4C4
 import java.text.DecimalFormat
 
 @Composable
@@ -33,69 +34,82 @@ fun RegisterDietBudgetScreen(
     registerDietViewModel: RegisterDietViewModel = hiltViewModel()
 ) {
     val decimalFormat = DecimalFormat("#,###")
-    val budget = registerDietViewModel.budget.collectAsState()
-
+    val budget = registerDietViewModel.budget
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(20.dp)
     ) {
-        TitleText(text = "예산을 입력해 주세요.")
         Spacer(modifier = Modifier.height(20.dp))
-        BasicTextField(
+        TitleText(text = "일일 예산을 입력해 주세요.", fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(20.dp))
+        OutlinedTextField(
             value = budget.value,
-            onValueChange = { registerDietViewModel.budget.value = it },
+            onValueChange = {
+                registerDietViewModel.handleChangeBudget(it)
+            },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp, 0.dp)
-                .height(40.dp)
                 .background(
                     color = Color.White,
-                )
-                .border(BorderStroke(1.dp, Color.Black)),
+                ),
+            label = {
+                Text(text = "일일 예산")
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-//        Row(modifier = Modifier.fillMaxWidth()) {
-//            Button(onClick = {
-////                registerDietViewModel.budget.value =
-////                    (registerDietViewModel.budget.value.toInt() + 5000).toString()
-//            }) {
-//                Text(
-//                    text = "+5천", modifier = Modifier
-//                        .padding(10.dp, 0.dp)
-//                        .weight(1f)
-//                )
-//            }
-//            Button(onClick = {
-////                registerDietViewModel.budget.value =
-////                    (registerDietViewModel.budget.value.toInt() + 10000).toString()
-//            }) {
-//                Text(
-//                    text = "+1만", modifier = Modifier
-//                        .padding(10.dp, 0.dp)
-//                        .weight(1f)
-//                )
-//            }
-//            Button(onClick = {
-////                registerDietViewModel.budget.value =
-////                    (registerDietViewModel.budget.value.toInt() + 50000).toString()
-//            }) {
-//                Text(
-//                    text = "+5만", modifier = Modifier
-//                        .padding(10.dp, 0.dp)
-//                        .weight(1f)
-//                )
-//            }
-//            Button(onClick = {
-////                registerDietViewModel.budget.value =
-////                    (registerDietViewModel.budget.value.toInt() + 100000).toString()
-//            }) {
-//                Text(
-//                    text = "+10만", modifier = Modifier
-//                        .padding(10.dp, 0.dp)
-//                        .weight(1f)
-//                )
-//            }
-//        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Button(
+                onClick = {
+                    registerDietViewModel.addBudget(
+                        5000
+                    )
+                }, modifier = Modifier
+                    .weight(1f),
+                border = BorderStroke(1.dp, Color_Alif_Gray),
+                colors = ButtonDefaults.buttonColors(Color.Transparent)
+            ) {
+                Text(
+                    text = "+5천",
+                )
+            }
+            Button(
+                onClick = {
+                }, modifier = Modifier.weight(1f),
+                border = BorderStroke(1.dp, Color_Alif_Gray),
+                colors = ButtonDefaults.buttonColors(Color.Transparent)
+            ) {
+                Text(
+                    text = "+1만",
+
+                    )
+            }
+            Button(
+                onClick = {
+                }, modifier = Modifier.weight(1f),
+                border = BorderStroke(1.dp, Color_Alif_Gray),
+                colors = ButtonDefaults.buttonColors(Color.Transparent)
+            ) {
+                Text(
+                    text = "+5만",
+
+                    )
+            }
+            Button(
+                onClick = {
+                }, modifier = Modifier.weight(1f),
+                border = BorderStroke(1.dp, Color_Alif_Gray),
+                colors = ButtonDefaults.buttonColors(Color.Transparent)
+            ) {
+                Text(
+                    text = "+10만",
+                )
+            }
+        }
         Spacer(modifier = Modifier.weight(1f))
         FillWidthButton {
             navController.navigate("register_diet_food")

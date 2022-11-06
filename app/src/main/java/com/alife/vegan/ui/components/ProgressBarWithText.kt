@@ -46,7 +46,6 @@ fun ProgresBarWithText(infoList: List<String>) {
                             .fillMaxSize()
                             .border(BorderStroke(1.dp, color = Color_Alife_Green))
                     ) {
-                        Log.i("test", size.toString())
                         drawRect(
                             color = Color_Alife_Green,
                             size = Size(

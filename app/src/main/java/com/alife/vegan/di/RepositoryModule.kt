@@ -2,7 +2,10 @@ package com.alife.vegan.di
 
 import android.app.Application
 import com.alife.vegan.data.repository.CalendarRepositoryImpl
+import com.alife.vegan.data.repository.RegisterDietRepositoryImpl
 import com.alife.vegan.domain.repository.CalendarRepository
+import com.alife.vegan.domain.repository.RegisterDietRepository
+import com.alife.vegan.network.AlifeService
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -19,16 +22,18 @@ import javax.inject.Singleton
 @InstallIn(ViewModelComponent::class)
 object RepositoryModule {
 
-//  @Binds
-//  abstract fun bindCalendarRepository(
-//    calendarRepositoryImpl: CalendarRepositoryImpl
-//  ): CalendarRepository
 
-  @Provides
-  @ViewModelScoped
-  fun provideCalendarRepo(): CalendarRepository {
-    return CalendarRepositoryImpl()
-  }
+    @Provides
+    @ViewModelScoped
+    fun provideCalendarRepo(): CalendarRepository {
+        return CalendarRepositoryImpl()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideRegisterDietRepo(alifeService: AlifeService): RegisterDietRepository {
+        return RegisterDietRepositoryImpl(alifeService)
+    }
 
 //  @Provides
 //  @Singleton

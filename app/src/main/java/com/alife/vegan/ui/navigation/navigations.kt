@@ -17,6 +17,7 @@ import com.alife.vegan.ui.calendar.CalendarViewModel
 import com.alife.vegan.ui.home.HomeScreen
 import com.alife.vegan.ui.onboard.RegisterDietBudgetScreen
 import com.alife.vegan.ui.onboard.RegisterDietFoodScreen
+import com.alife.vegan.ui.onboard.RegisterShoppingCart
 import com.alife.vegan.ui.setting.*
 import com.alife.vegan.ui.shpping.ShoppingScreen
 
@@ -40,6 +41,9 @@ fun NavGraphBuilder.registerDiet(navController: NavController) {
         }
         composable(Screen.RegisterDietFood.route) {
             RegisterDietFoodScreen(navController)
+        }
+        composable(Screen.RegisterDietShoppingCart.route) {
+            RegisterShoppingCart(navController)
         }
     }
 }

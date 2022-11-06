@@ -33,6 +33,7 @@ import com.alife.vegan.ui.theme.Color_Alif_707070
 import com.alife.vegan.ui.theme.Color_Alif_Gray
 import com.alife.vegan.ui.theme.Color_Alif_GrayBackground
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
+import com.google.accompanist.flowlayout.MainAxisAlignment
 
 @Composable
 fun RegisterShoppingCart(
@@ -46,10 +47,11 @@ fun RegisterShoppingCart(
                 .weight(1f)
                 .verticalScroll(rememberScrollState())
         ) {
+            Spacer(modifier = Modifier.height(20.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp, 10.dp)
+                    .padding(10.dp, 0.dp)
             ) {
                 TitleText(text = "식단 장바구니", color = Color_Alife_Cyan, fontSize = 28.sp)
             }
@@ -68,9 +70,10 @@ fun RegisterShoppingCart(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(20.dp, 0.dp),
+                .padding(10.dp, 0.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
+            Spacer(modifier = Modifier.height(10.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -110,7 +113,11 @@ private fun ShoppingCartItem() {
             color = Color(0xff707070)
         )
         Spacer(modifier = Modifier.height(10.dp))
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp, 0.dp)
+        ) {
             Card(
                 modifier = Modifier.size(80.dp),
                 shape = CircleShape,
@@ -129,27 +136,53 @@ private fun ShoppingCartItem() {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(text = "5,000원 | 120g", color = Color_Alif_707070, fontSize = 14.sp)
-                        Text(text = "250kcal", color = Color_Alif_707070, fontSize = 14.sp)
+                        Text(
+                            text = "5,000원 | 120g",
+                            color = Color_Alif_707070,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.height(5.dp))
+                        Text(
+                            text = "250kcal",
+                            color = Color_Alif_707070,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
                     Checkbox(checked = true, onCheckedChange = {})
                 }
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp, 0.dp),
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Button(onClick = { /*TODO*/ }) {
-                        Text(text = "아침")
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.Transparent
+                        )
+                    ) {
+                        Text(text = "아침", color = Color.Gray)
                     }
-                    Button(onClick = { /*TODO*/ }) {
-                        Text(text = "점심")
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.Transparent
+                        )
+                    ) {
+                        Text(text = "점심", color = Color.Gray)
                     }
-                    Button(onClick = { /*TODO*/ }) {
-                        Text(text = "저녁")
+                    Button(
+                        onClick = { /*TODO*/ },
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color.Transparent
+                        )
+                    ) {
+                        Text(text = "저녁", color = Color.Gray)
                     }
                 }
+                Spacer(modifier = Modifier.height(5.dp))
             }
         }
     }

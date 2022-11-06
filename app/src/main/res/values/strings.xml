@@ -16,4 +16,5 @@
 
 
     <string name="select_vegun_category">채식 카테고리를 선택해주세요.</string>
+    <string name="register_diet_shopping_cart">RegisterDietShoppingCart</string>
 </resources>
