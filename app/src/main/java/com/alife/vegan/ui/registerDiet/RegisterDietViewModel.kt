@@ -7,10 +7,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import com.alife.vegan.domain.repository.RegisterDietRepository
 import com.alife.vegan.network.response.GetFoodByPriceResponseItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
+@HiltViewModel
 class RegisterDietViewModel @Inject constructor(
     private val registerDietRepository: RegisterDietRepository
 ) : ViewModel() {
@@ -25,19 +27,20 @@ class RegisterDietViewModel @Inject constructor(
 
     var foodList = mutableStateListOf<GetFoodByPriceResponseItem>()
 
-    suspend fun getFoodByPrice() {
+    suspend fun getFoodByPrice(onComplete: () -> Unit) {
         registerDietRepository.getFoodByPrice(budget.value.toInt(),
             onStart = {
 
             },
             onComplete = {
-
+                onComplete()
             }
         ).collectLatest {
+            foodList.clear()
             it.forEach { item ->
                 foodList.add(item)
             }
-            Log.i("test", foodList.toString())
+            foodList.sortedBy { it -> it.product_name }
         }
     }
 
@@ -50,6 +53,11 @@ class RegisterDietViewModel @Inject constructor(
         _isExpand.value = !isExpand
     }
 
+    fun changeSelected(item: GetFoodByPriceResponseItem) {
+        foodList.add(foodList.indexOf(item), item.copy(isSelected = !item.isSelected))
+        foodList.remove(item)
+    }
+
     fun handleChangeBudget(budget: String) {
         _budget.value = budget
     }
@@ -57,6 +65,7 @@ class RegisterDietViewModel @Inject constructor(
     fun addBudget(budget: Int) {
         if (_budget.value.isEmpty()) {
             _budget.value = budget.toString()
+            return
         }
         _budget.value = (_budget.value.toInt() + budget).toString()
     }

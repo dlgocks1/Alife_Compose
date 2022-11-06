@@ -1,6 +1,5 @@
 package com.alife.vegan.network.response
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -17,7 +16,7 @@ data class GetFoodByPriceResponseItem(
     @Json(name = "company")
     val company: String,
     @Json(name = "cooking_type")
-    val cookingType: String,
+    val cooking_type: String,
     @Json(name = "fat")
     val fat: Double,
     @Json(name = "id")
@@ -27,29 +26,31 @@ data class GetFoodByPriceResponseItem(
     @Json(name = "price")
     val price: Int,
     @Json(name = "primary_type")
-    val primaryType: String,
+    val primary_type: String,
     @Json(name = "product_category")
-    val productCategory: Any,
+    val product_category: String?,
     @Json(name = "product_image")
-    val productImage: String,
+    val product_image: String,
     @Json(name = "product_name")
-    val productName: String,
+    val product_name: String,
     @Json(name = "protein")
     val protein: Double,
     @Json(name = "sat_fat")
     val satFat: Double,
     @Json(name = "secondary_type")
-    val secondaryType: String,
+    val secondary_type: String,
     @Json(name = "serving_size")
-    val servingSize: Double,
+    val serving_size: Double,
     @Json(name = "sodium")
     val sodium: Double,
     @Json(name = "specific")
-    val specific: Any,
+    val specific: String?,
     @Json(name = "sugar")
     val sugar: Double,
     @Json(name = "trans_fat")
-    val transFat: Double,
+    val trans_fat: Double,
     @Json(name = "vegan_option")
-    val veganOption: String
+    val vegan_option: String,
+    var isSelected: Boolean = false,
+    var time: Int = 0,
 )

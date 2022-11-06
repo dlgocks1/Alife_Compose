@@ -1,15 +1,11 @@
 package com.alife.vegan.ui.onboard
 
-import android.graphics.RectF
-import android.widget.Space
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,10 +13,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,7 +23,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.alife.vegan.R
 import com.alife.vegan.ui.components.FoodItem
-import com.alife.vegan.ui.components.ProgresBarWithText
 import com.alife.vegan.ui.components.TitleText
 import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
 import com.alife.vegan.ui.theme.Color_Alif_Gray
@@ -44,9 +37,9 @@ fun RegisterDietFoodScreen(
     registerDietViewModel: RegisterDietViewModel = hiltViewModel()
 ) {
 
-    LaunchedEffect(Unit) {
-        registerDietViewModel.getFoodByPrice()
-    }
+//    LaunchedEffect(Unit) {
+//        registerDietViewModel.getFoodByPrice()
+//    }
 
     Column() {
         Column(
@@ -68,7 +61,10 @@ fun RegisterDietFoodScreen(
                 modifier = Modifier.padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                DietProgresBarWithText(infoList = registerDietViewModel.listState.value)
+                DietProgresBarWithText(
+                    registerDietViewModel,
+                    infoList = registerDietViewModel.listState.value
+                )
                 Icon(
                     painter = painterResource(id = R.drawable.ic_baseline_arrow_back_ios_new_24),
                     contentDescription = null,
@@ -105,9 +101,12 @@ fun RegisterDietFoodScreen(
                             Alignment.CenterVertically
                         )
                     ) {
-                        // 더미데이터 리스트 추가
-                        for (i in 0..8) {
-                            FoodItem()
+                        registerDietViewModel.foodList.map {
+                            FoodItem(
+                                { item ->
+                                    registerDietViewModel.changeSelected(item)
+                                }, it
+                            )
                         }
                     }
                 }
@@ -131,9 +130,7 @@ fun RegisterDietFoodScreen(
                             Alignment.CenterVertically
                         )
                     ) {
-                        for (i in 0..4) {
-                            com.alife.vegan.ui.components.FoodItem()
-                        }
+
                     }
                 }
             }
@@ -164,7 +161,12 @@ fun RegisterDietFoodScreen(
 }
 
 @Composable
-private fun DietProgresBarWithText(infoList: List<String>) {
+private fun DietProgresBarWithText(
+    viewModel: RegisterDietViewModel,
+    infoList: List<String>
+) {
+    var currentBudget = viewModel.foodList.filter { it.isSelected }.sumOf { it.price }.toFloat()
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.End,
@@ -197,7 +199,8 @@ private fun DietProgresBarWithText(infoList: List<String>) {
                             drawRoundRect(
                                 color = Color_Alife_Green,
                                 size = Size(
-                                    size.width * 0.7f, size.height // 얼마큼 채워져있는지 %로 표현
+                                    size.width * (currentBudget / viewModel.budget.value.toFloat()),
+                                    size.height // 얼마큼 채워져있는지 %로 표현
                                 ),
                                 cornerRadius = CornerRadius(20f)
                             )
@@ -206,7 +209,9 @@ private fun DietProgresBarWithText(infoList: List<String>) {
                 }
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-                    text = "1250 / 7514", fontSize = 12.sp, color = Color(0xFF474957)
+                    text = "$currentBudget / ${viewModel.budget.value}",
+                    fontSize = 12.sp,
+                    color = Color(0xFF474957)
                 )
             }
         }

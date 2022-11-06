@@ -10,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
@@ -26,6 +27,8 @@ import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
 import com.alife.vegan.ui.theme.Color_Alif_707070
 import com.alife.vegan.ui.theme.Color_Alif_Gray
 import com.alife.vegan.ui.theme.Color_Alife_C4C4C4
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 @Composable
@@ -33,6 +36,7 @@ fun RegisterDietBudgetScreen(
     navController: NavController = rememberNavController(),
     registerDietViewModel: RegisterDietViewModel = hiltViewModel()
 ) {
+    val scope = rememberCoroutineScope()
     val decimalFormat = DecimalFormat("#,###")
     val budget = registerDietViewModel.budget
     Column(
@@ -79,28 +83,35 @@ fun RegisterDietBudgetScreen(
             }
             Button(
                 onClick = {
+                    registerDietViewModel.addBudget(
+                        10000
+                    )
                 }, modifier = Modifier.weight(1f),
                 border = BorderStroke(1.dp, Color_Alif_Gray),
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
                 Text(
                     text = "+1만",
-
-                    )
+                )
             }
             Button(
                 onClick = {
+                    registerDietViewModel.addBudget(
+                        50000
+                    )
                 }, modifier = Modifier.weight(1f),
                 border = BorderStroke(1.dp, Color_Alif_Gray),
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
                 Text(
                     text = "+5만",
-
-                    )
+                )
             }
             Button(
                 onClick = {
+                    registerDietViewModel.addBudget(
+                        100000
+                    )
                 }, modifier = Modifier.weight(1f),
                 border = BorderStroke(1.dp, Color_Alif_Gray),
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
@@ -112,6 +123,10 @@ fun RegisterDietBudgetScreen(
         }
         Spacer(modifier = Modifier.weight(1f))
         FillWidthButton {
+            scope.launch {
+                registerDietViewModel.getFoodByPrice {
+                }
+            }
             navController.navigate("register_diet_food")
         }
     }

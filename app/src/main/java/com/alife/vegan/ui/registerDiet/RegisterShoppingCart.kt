@@ -1,9 +1,6 @@
 package com.alife.vegan.ui.onboard
 
-import android.widget.Space
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -11,12 +8,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,23 +22,39 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.alife.vegan.R
-import com.alife.vegan.ui.components.FoodItem
-import com.alife.vegan.ui.components.ProgresBarWithText
+import com.alife.vegan.network.response.GetFoodByPriceResponseItem
 import com.alife.vegan.ui.components.TitleText
 import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
 import com.alife.vegan.ui.theme.Color_Alif_707070
-import com.alife.vegan.ui.theme.Color_Alif_Gray
-import com.alife.vegan.ui.theme.Color_Alif_GrayBackground
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
-import com.google.accompanist.flowlayout.MainAxisAlignment
+import com.skydoves.landscapist.glide.GlideImage
+import kotlin.math.floor
 
 @Composable
 fun RegisterShoppingCart(
     navController: NavController = rememberNavController(),
     registerDietViewModel: RegisterDietViewModel = hiltViewModel()
 ) {
-    Column() {
+
+    val shoppingList = remember {
+        mutableStateListOf<GetFoodByPriceResponseItem>()
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        registerDietViewModel.foodList.filter { it.isSelected }.map {
+            shoppingList.add(it)
+        }
+    }
+
+    fun updateShoppingCart(index: Int, time: Int) {
+        shoppingList[index] = shoppingList[index].copy(time = time)
+    }
+
+    fun updateIsSelected(index: Int, isSelected: Boolean) {
+        shoppingList[index] = shoppingList[index].copy(isSelected = isSelected)
+    }
+
+    Column {
         Column(
             modifier = Modifier
                 .padding(20.dp, 0.dp)
@@ -62,8 +76,14 @@ fun RegisterShoppingCart(
                 modifier = Modifier.padding(10.dp, 0.dp)
             )
             Spacer(modifier = Modifier.height(20.dp))
-            for (i in 0..5) {
-                ShoppingCartItem()
+            shoppingList.map {
+                ShoppingCartItem(
+                    item = it,
+                    updateTime = { time -> updateShoppingCart(shoppingList.indexOf(it), time) },
+                    updateIsSelected = { selected ->
+                        updateIsSelected(shoppingList.indexOf(it), !it.isSelected)
+                    }
+                )
             }
         }
 
@@ -80,7 +100,11 @@ fun RegisterShoppingCart(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = "상품 금액", fontSize = 16.sp, color = Color_Alif_707070)
-                Text(text = "24,000원", fontSize = 16.sp, color = Color_Alif_707070)
+                Text(
+                    text = "${shoppingList.filter { it.isSelected }.sumOf { it.price }}원",
+                    fontSize = 16.sp,
+                    color = Color_Alif_707070
+                )
             }
             Row(
                 modifier = Modifier
@@ -88,7 +112,12 @@ fun RegisterShoppingCart(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = "칼로리", fontSize = 16.sp, color = Color_Alif_707070)
-                Text(text = "1,840 Kcal", fontSize = 16.sp, color = Color_Alif_707070)
+                Text(
+                    text = "${
+                        floor(shoppingList.filter { it.isSelected }.sumOf { it.calory })
+                    }kcal",
+                    fontSize = 16.sp, color = Color_Alif_707070
+                )
             }
             Button(
                 onClick = { /*TODO*/ },
@@ -104,10 +133,19 @@ fun RegisterShoppingCart(
 }
 
 @Composable
-private fun ShoppingCartItem() {
+private fun ShoppingCartItem(
+    item: GetFoodByPriceResponseItem,
+    updateTime: (Int) -> Unit,
+    updateIsSelected: (Boolean) -> Unit
+) {
+    val MORNING = 0
+    val LUNCH = 1
+    val DINNER = 2
+
+    Log.i("test", item.toString())
     Column {
         Text(
-            text = "상품 이름",
+            text = item.product_name,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp,
             color = Color(0xff707070)
@@ -123,8 +161,8 @@ private fun ShoppingCartItem() {
                 shape = CircleShape,
                 elevation = 2.dp
             ) {
-                Image(
-                    painterResource(R.drawable.img_dummy),
+                GlideImage(
+                    imageModel = item.product_image,
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.size(80.dp)
@@ -137,20 +175,22 @@ private fun ShoppingCartItem() {
                 ) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "5,000원 | 120g",
+                            text = "${item.price}원 | ${item.amount}g",
                             color = Color_Alif_707070,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(modifier = Modifier.height(5.dp))
                         Text(
-                            text = "250kcal",
+                            text = "${item.calory}kcal",
                             color = Color_Alif_707070,
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
-                    Checkbox(checked = true, onCheckedChange = {})
+                    Checkbox(
+                        checked = item.isSelected,
+                        onCheckedChange = { updateIsSelected(item.isSelected) })
                 }
                 Row(
                     modifier = Modifier
@@ -158,28 +198,43 @@ private fun ShoppingCartItem() {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            updateTime(MORNING)
+                        },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.Transparent
+                            backgroundColor = if (item.time == MORNING) Color_Alife_Cyan else Color.Transparent
                         )
                     ) {
-                        Text(text = "아침", color = Color.Gray)
+                        Text(
+                            text = "아침",
+                            color = if (item.time == MORNING) Color.White else Color.Gray
+                        )
                     }
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            updateTime(LUNCH)
+                        },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.Transparent
+                            backgroundColor = if (item.time == LUNCH) Color_Alife_Cyan else Color.Transparent
                         )
                     ) {
-                        Text(text = "점심", color = Color.Gray)
+                        Text(
+                            text = "점심",
+                            color = if (item.time == LUNCH) Color.White else Color.Gray
+                        )
                     }
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            updateTime(DINNER)
+                        },
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.Transparent
+                            backgroundColor = if (item.time == DINNER) Color_Alife_Cyan else Color.Transparent
                         )
                     ) {
-                        Text(text = "저녁", color = Color.Gray)
+                        Text(
+                            text = "저녁",
+                            color = if (item.time == DINNER) Color.White else Color.Gray
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(5.dp))
@@ -187,6 +242,7 @@ private fun ShoppingCartItem() {
         }
     }
 }
+
 
 @Preview
 @Composable

@@ -18,6 +18,7 @@ import com.alife.vegan.ui.home.HomeScreen
 import com.alife.vegan.ui.onboard.RegisterDietBudgetScreen
 import com.alife.vegan.ui.onboard.RegisterDietFoodScreen
 import com.alife.vegan.ui.onboard.RegisterShoppingCart
+import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
 import com.alife.vegan.ui.setting.*
 import com.alife.vegan.ui.shpping.ShoppingScreen
 
@@ -36,14 +37,26 @@ fun NavGraphBuilder.mainGraph(navController: NavController, calendarViewModel: C
 
 fun NavGraphBuilder.registerDiet(navController: NavController) {
     navigation(startDestination = Screen.RegisterDietBudget.route, route = "RegisterDietGraph") {
-        composable(Screen.RegisterDietBudget.route) {
-            RegisterDietBudgetScreen(navController)
+        composable(Screen.RegisterDietBudget.route) { entry ->
+            val backStackEntry = remember(entry) {
+                navController.getBackStackEntry("RegisterDietGraph")
+            }
+            val registerViewModel: RegisterDietViewModel = hiltViewModel(backStackEntry)
+            RegisterDietBudgetScreen(navController, registerViewModel)
         }
-        composable(Screen.RegisterDietFood.route) {
-            RegisterDietFoodScreen(navController)
+        composable(Screen.RegisterDietFood.route) { entry ->
+            val backStackEntry = remember(entry) {
+                navController.getBackStackEntry("RegisterDietGraph")
+            }
+            val registerViewModel: RegisterDietViewModel = hiltViewModel(backStackEntry)
+            RegisterDietFoodScreen(navController, registerViewModel)
         }
-        composable(Screen.RegisterDietShoppingCart.route) {
-            RegisterShoppingCart(navController)
+        composable(Screen.RegisterDietShoppingCart.route) { entry ->
+            val backStackEntry = remember(entry) {
+                navController.getBackStackEntry("RegisterDietGraph")
+            }
+            val registerViewModel: RegisterDietViewModel = hiltViewModel(backStackEntry)
+            RegisterShoppingCart(navController, registerViewModel)
         }
     }
 }
