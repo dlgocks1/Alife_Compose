@@ -7,10 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -28,6 +25,7 @@ import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
 import com.alife.vegan.ui.theme.Color_Alif_707070
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.launch
 import kotlin.math.floor
 
 @Composable
@@ -36,6 +34,7 @@ fun RegisterShoppingCart(
     registerDietViewModel: RegisterDietViewModel = hiltViewModel()
 ) {
 
+    val scope = rememberCoroutineScope()
     val shoppingList = remember {
         mutableStateListOf<GetFoodByPriceResponseItem>()
     }
@@ -70,7 +69,7 @@ fun RegisterShoppingCart(
                 TitleText(text = "식단 장바구니", color = Color_Alife_Cyan, fontSize = 28.sp)
             }
             Text(
-                text = "선택 상품 N개",
+                text = "선택 상품 ${shoppingList.count { it.isSelected }}개",
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(10.dp, 0.dp)
@@ -120,7 +119,15 @@ fun RegisterShoppingCart(
                 )
             }
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    scope.launch {
+                        registerDietViewModel.registerDiet(shoppingList) {
+                            navController.navigate("MainGraph") {
+                                popUpTo("MainGraph")
+                            }
+                        }
+                    }
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(20.dp)),
@@ -142,7 +149,6 @@ private fun ShoppingCartItem(
     val LUNCH = 1
     val DINNER = 2
 
-    Log.i("test", item.toString())
     Column {
         Text(
             text = item.product_name,

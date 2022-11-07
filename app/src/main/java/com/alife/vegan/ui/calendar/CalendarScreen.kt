@@ -1,7 +1,6 @@
 package com.alife.vegan.ui.calendar
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -26,10 +25,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.alife.vegan.R
+import com.alife.vegan.network.response.GetFoodByPriceResponse
+import com.alife.vegan.network.response.GetFoodByPriceResponseItem
 import com.alife.vegan.ui.calendar.Dummy.dayList
-import com.alife.vegan.ui.calendar.Dummy.dummyFood
 import com.alife.vegan.ui.components.CalendarItem
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
+import com.skydoves.landscapist.glide.GlideImage
 
 
 object Dummy {
@@ -42,9 +43,6 @@ object Dummy {
         "Sat" to 16,
         "Sun" to 17,
         "Mon" to 18
-    )
-    val dummyFood = listOf(
-        "두부샐러드" to "240kcal", "비건 라면" to "490kcal", "비건 짜장면" to "320kcal"
     )
 }
 
@@ -73,9 +71,14 @@ fun CalendarScreen(
                         Alignment.CenterHorizontally
                     )
                 ) {
+
                     Icon(
                         painter = painterResource(id = R.drawable.ic_baseline_shopping_cart_24),
-                        modifier = Modifier.size(24.dp),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clickable {
+                                navController.navigate("RegisterDietGraph")
+                            },
                         tint = Color(0xff707070),
                         contentDescription = "shopping_icon"
                     )
@@ -125,17 +128,17 @@ fun CalendarScreen(
 }
 
 @Composable
-fun DietListContainer(navController: NavController, value: List<Pair<String, String>>) {
+fun DietListContainer(navController: NavController, value: GetFoodByPriceResponse?) {
     val isEmpty = false
-    if (value.isEmpty()) {
+    if (value == null || value.isEmpty()) {
         EmptyDiet(navController)
     } else {
-        DietList()
+        DietList(value)
     }
 }
 
 @Composable
-fun DietList() {
+fun DietList(getFoodByPriceResponse: GetFoodByPriceResponse) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -143,20 +146,26 @@ fun DietList() {
             .padding(20.dp, 10.dp)
     ) {
         LazyColumn {
-            for (i in 0..2) {
-                item {
-                    DietListItem()
-                }
+            item {
+                DietListItem("아침", getFoodByPriceResponse.filter { it.wtime == "아침" })
             }
+            item {
+                DietListItem("점심", getFoodByPriceResponse.filter { it.wtime == "점심" })
+            }
+            item {
+                DietListItem("저녁", getFoodByPriceResponse.filter { it.wtime == "저녁" })
+            }
+
         }
     }
 }
 
 @Composable
-fun DietListItem() {
+fun DietListItem(item: String, itemList: List<GetFoodByPriceResponseItem>) {
+    if (itemList.isEmpty()) return
     Column {
         Spacer(modifier = Modifier.height(20.dp))
-        Text(text = "아침", fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xff707070))
+        Text(text = item, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color(0xff707070))
         Spacer(modifier = Modifier.height(5.dp))
         Card(
             shape = RoundedCornerShape(10),
@@ -166,13 +175,15 @@ fun DietListItem() {
             Column(
                 modifier = Modifier.padding(20.dp, 20.dp)
             ) {
-                for (item in dummyFood) {
+                itemList.forEach { item ->
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(0.dp, 10.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.img_dummy),
+                        GlideImage(
+                            imageModel = item.product_image,
                             contentDescription = "food_Img",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
@@ -185,22 +196,23 @@ fun DietListItem() {
                                 .weight(1f)
                         ) {
                             Text(
-                                text = item.first,
+                                text = item.product_name,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xff707070)
                             )
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
-                                text = item.second,
+                                text = item.calory.toString(),
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xff707070)
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.height(20.dp))
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
                 Divider(
                     modifier = Modifier.fillMaxWidth(),
                     color = Color(0x08000000),
@@ -212,7 +224,11 @@ fun DietListItem() {
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Total N Kcal", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "Total ${itemList.sumOf { it.calory }} Kcal",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_baseline_arrow_forward_ios_24),
                         contentDescription = null,

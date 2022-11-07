@@ -53,4 +53,6 @@ data class GetFoodByPriceResponseItem(
     val vegan_option: String,
     var isSelected: Boolean = false,
     var time: Int = 0,
+    @Json(name = "wtime")
+    val wtime: String? = "아침",
 )

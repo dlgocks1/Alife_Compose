@@ -143,7 +143,9 @@ fun RegisterDietFoodScreen(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = "Total : 000kcal",
+                text = "Total : ${
+                    registerDietViewModel.foodList.filter { it.isSelected }.sumOf { it.calory }
+                }kcal",
                 modifier = Modifier.padding(20.dp, 10.dp),
                 color = Color.White
             )

@@ -2,13 +2,12 @@ package com.alife.vegan.ui.registerDiet
 
 import android.util.Log
 import androidx.compose.runtime.*
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import com.alife.vegan.domain.repository.RegisterDietRepository
+import com.alife.vegan.network.request.RegisterDietRequest
+import com.alife.vegan.network.request.RegisterDietRequestItem
 import com.alife.vegan.network.response.GetFoodByPriceResponseItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
@@ -26,6 +25,37 @@ class RegisterDietViewModel @Inject constructor(
     var listState = mutableStateOf(listOf("남은 예산"))
 
     var foodList = mutableStateListOf<GetFoodByPriceResponseItem>()
+
+    suspend fun registerDiet(
+        shoppingList: MutableList<GetFoodByPriceResponseItem>,
+        onComplete: () -> Unit
+    ) {
+        val params = arrayListOf<RegisterDietRequestItem>()
+        shoppingList
+            .filter { it.isSelected }
+            .forEach { item ->
+                params.add(
+                    RegisterDietRequestItem(
+                        item.id,
+                        wtime = when (item.time) {
+                            1 -> "아침"
+                            2 -> "점심"
+                            else -> "저녁"
+                        }
+                    )
+                )
+            }
+
+        Log.i("test", params.toString())
+        registerDietRepository.registerDiet(
+            params = params
+        ).collectLatest {
+            Log.i("test", it.toString())
+            if (it.isNotEmpty()) {
+                onComplete()
+            }
+        }
+    }
 
     suspend fun getFoodByPrice(onComplete: () -> Unit) {
         registerDietRepository.getFoodByPrice(budget.value.toInt(),
