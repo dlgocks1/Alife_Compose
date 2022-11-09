@@ -2,9 +2,11 @@
 
 package com.alife.vegan
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -19,22 +21,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.alife.vegan.ui.Screen
-import com.alife.vegan.ui.calendar.CalendarScreen
 import com.alife.vegan.ui.calendar.CalendarViewModel
-import com.alife.vegan.ui.home.HomeScreen
 import com.alife.vegan.ui.navigation.mainGraph
 import com.alife.vegan.ui.navigation.registerDiet
 import com.alife.vegan.ui.navigation.settingGraph
-import com.alife.vegan.ui.setting.*
-import com.alife.vegan.ui.shpping.ShoppingScreen
+import com.alife.vegan.ui.shpping.ShoppingViewModel
 import com.alife.vegan.ui.theme.AlifeTheme
 import com.alife.vegan.ui.theme.Color_Alife_C4C4C4
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
@@ -57,10 +53,10 @@ private fun RootIndex() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     when (navBackStackEntry?.destination?.route) {
-        "home", "calendar", "shopping" -> {
+        "home", "calendar", "shopping", "shopping_result" -> {
             bottomBarState.value = true
         }
-        "setting_gender", "setting_exercise", "setting_diet_direction",
+        "detail", "setting_gender", "setting_exercise", "setting_diet_direction",
         "register_diet_budget", "register_diet_food" -> {
             bottomBarState.value = false
         }
@@ -73,6 +69,7 @@ private fun RootIndex() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 private fun RootNavhost(navController: NavHostController, bottomBarState: MutableState<Boolean>) {
     val bottomNavItems = listOf(
@@ -85,6 +82,7 @@ private fun RootNavhost(navController: NavHostController, bottomBarState: Mutabl
     ) { innerPadding ->
 
         val calendarViewModel: CalendarViewModel = hiltViewModel()
+        val shoppingViewModel: ShoppingViewModel = hiltViewModel()
 
         NavHost(
             navController,
@@ -93,6 +91,7 @@ private fun RootNavhost(navController: NavHostController, bottomBarState: Mutabl
         ) {
             mainGraph(
                 calendarViewModel = calendarViewModel,
+                shoppingViewModel = shoppingViewModel,
                 navController = navController
             )
             settingGraph(
@@ -101,6 +100,7 @@ private fun RootNavhost(navController: NavHostController, bottomBarState: Mutabl
             registerDiet(
                 navController = navController
             )
+
         }
     }
 }

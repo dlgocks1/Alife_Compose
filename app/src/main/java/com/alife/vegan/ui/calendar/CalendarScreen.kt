@@ -31,6 +31,7 @@ import com.alife.vegan.ui.calendar.Dummy.dayList
 import com.alife.vegan.ui.components.CalendarItem
 import com.alife.vegan.ui.theme.Color_Alife_Cyan
 import com.skydoves.landscapist.glide.GlideImage
+import kotlin.math.floor
 
 
 object Dummy {
@@ -225,7 +226,7 @@ fun DietListItem(item: String, itemList: List<GetFoodByPriceResponseItem>) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Total ${itemList.sumOf { it.calory }} Kcal",
+                        text = "Total ${floor(itemList.sumOf { it.calory })} Kcal",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )

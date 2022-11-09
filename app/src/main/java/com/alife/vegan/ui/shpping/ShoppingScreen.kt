@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 
 package com.alife.vegan.ui.shpping
 
@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -15,28 +17,39 @@ import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.alife.vegan.R
 import com.alife.vegan.ui.components.CustomTextField
 import com.alife.vegan.ui.theme.Color_Alif_Gray
 import com.alife.vegan.ui.theme.Color_Alif_GrayBackground
 
 @Composable
-fun ShoppingScreen() {
+fun ShoppingScreen(
+    navController: NavController,
+    shoppingViewModel: ShoppingViewModel = hiltViewModel()
+) {
 
+    val searchText = shoppingViewModel.searchText.value
     val list = listOf("제품1", "제품2", "제품3", "제품4")
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     LazyColumn(
         modifier = Modifier
@@ -56,7 +69,7 @@ fun ShoppingScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(20.dp, 20.dp),
-                value = "asdasd",
+                value = searchText,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color(0x15000000),
                     cursorColor = Color.Black,
@@ -64,30 +77,36 @@ fun ShoppingScreen() {
                     unfocusedIndicatorColor = Color.Transparent
                 ),
                 onValueChange = {
-//                if (it.length <= maxLength) textState = it
+                    if (it.length <= 15) shoppingViewModel.handleTextChange(it)
                 },
                 shape = RoundedCornerShape(25.dp),
                 singleLine = true,
                 trailingIcon = {
-//                if (textState.isNotEmpty()) {
-                    IconButton(onClick = {
-//                    onClicktextState = ""
-                    }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Close,
-                            contentDescription = null
-                        )
+                    if (searchText.isNotEmpty()) {
+                        IconButton(onClick = {
+                            shoppingViewModel.handleTextChange("")
+                        }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Close,
+                                contentDescription = null
+                            )
+                        }
                     }
-//                }
                 },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Search,
                         contentDescription = null
                     )
-                }
+                },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                keyboardActions = KeyboardActions(
+                    onSearch = {
+                        keyboardController?.hide()
+                        shoppingViewModel.searchFood()
+                        navController.navigate("shopping_result")
+                    })
             )
-
             Image(
                 painter = painterResource(id = R.drawable.img_dummy_home),
                 contentDescription = null,
@@ -147,7 +166,8 @@ fun ShoppingScreen() {
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
             ) {
                 Column(
-                    modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.img_dummy),
@@ -193,7 +213,8 @@ fun ShoppingScreen() {
                     Text(text = "11,800원", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
                 Column(
-                    modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(5.dp)
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.img_dummy),
@@ -248,5 +269,5 @@ fun ShoppingScreen() {
 @Preview
 @Composable
 fun PreviewShopping() {
-    ShoppingScreen()
+    ShoppingScreen(rememberNavController())
 }

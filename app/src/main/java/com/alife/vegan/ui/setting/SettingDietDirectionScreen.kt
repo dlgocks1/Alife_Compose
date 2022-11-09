@@ -87,12 +87,12 @@ private fun DietDirectionBtn(text: String, settingDietViewModel: SettingDietView
         modifier = Modifier.padding(10.dp, 0.dp),
         shape = RoundedCornerShape(5.dp),
         colors = ButtonDefaults.buttonColors(Color.White),
-        border = BorderStroke(1.dp, if (isSelected) Color_Alife_Cyan else Color(0xffd1d5da))
+        border = BorderStroke(1.dp, if (isSelected) Color_Alife_Cyan else Color.Gray)
     ) {
         Text(
             text = text,
             fontSize = 17.sp,
-            color = if (isSelected) Color_Alife_Cyan else Color_Alif_Gray,
+            color = if (isSelected) Color_Alife_Cyan else Color.Gray,
         )
     }
 }

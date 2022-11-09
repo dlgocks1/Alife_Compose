@@ -2,27 +2,38 @@
 
 package com.alife.vegan.ui.navigation
 
+import android.os.Build
+import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
+import androidx.navigation.*
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.alife.vegan.network.response.GetFoodByPriceResponseItem
 import com.alife.vegan.ui.Screen
 import com.alife.vegan.ui.calendar.CalendarScreen
 import com.alife.vegan.ui.calendar.CalendarViewModel
+import com.alife.vegan.ui.detail.DetailScreen
 import com.alife.vegan.ui.home.HomeScreen
 import com.alife.vegan.ui.onboard.RegisterDietBudgetScreen
 import com.alife.vegan.ui.onboard.RegisterDietFoodScreen
 import com.alife.vegan.ui.onboard.RegisterShoppingCart
 import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
 import com.alife.vegan.ui.setting.*
+import com.alife.vegan.ui.shpping.ShoppingResultScreen
 import com.alife.vegan.ui.shpping.ShoppingScreen
+import com.alife.vegan.ui.shpping.ShoppingViewModel
+import com.google.gson.Gson
 
-fun NavGraphBuilder.mainGraph(navController: NavController, calendarViewModel: CalendarViewModel) {
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+fun NavGraphBuilder.mainGraph(
+    navController: NavController,
+    calendarViewModel: CalendarViewModel,
+    shoppingViewModel: ShoppingViewModel
+) {
     navigation(startDestination = Screen.Calendar.route, route = "MainGraph") {
         composable(Screen.Calendar.route) {
             CalendarScreen(
@@ -31,7 +42,16 @@ fun NavGraphBuilder.mainGraph(navController: NavController, calendarViewModel: C
             )
         }
         composable(Screen.Home.route) { HomeScreen() }
-        composable(Screen.Shopping.route) { ShoppingScreen() }
+        composable(Screen.Shopping.route) { ShoppingScreen(navController, shoppingViewModel) }
+        composable(Screen.ShoppingResult.route) {
+            ShoppingResultScreen(navController, shoppingViewModel)
+        }
+        composable(
+            route = Screen.Detail.route
+        ) { entry ->
+            DetailScreen()
+        }
+
     }
 }
 
@@ -106,4 +126,18 @@ private fun GenerateSettingViewModel(
         navController.getBackStackEntry("SettingGraph")
     }
     return hiltViewModel(backStackEntry)
+}
+
+class AssetParamType : NavType<GetFoodByPriceResponseItem>(isNullableAllowed = false) {
+    override fun get(bundle: Bundle, key: String): GetFoodByPriceResponseItem? {
+        return bundle.getParcelable(key)
+    }
+
+    override fun parseValue(value: String): GetFoodByPriceResponseItem {
+        return Gson().fromJson(value, GetFoodByPriceResponseItem::class.java)
+    }
+
+    override fun put(bundle: Bundle, key: String, value: GetFoodByPriceResponseItem) {
+        bundle.putParcelable(key, value)
+    }
 }

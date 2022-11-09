@@ -23,4 +23,8 @@ interface AlifeService {
     @POST("/userinfo/get_meal")
     suspend fun getDietList(): ApiResponse<GetFoodByPriceResponse>
 
+    @POST("/userinfo/product/plist")
+    suspend fun searchFood(
+        @Query("product_name") productName: String
+    ): ApiResponse<GetFoodByPriceResponse>
 }

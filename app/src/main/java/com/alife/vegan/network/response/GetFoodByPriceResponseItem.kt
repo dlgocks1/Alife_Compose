@@ -1,9 +1,12 @@
 package com.alife.vegan.network.response
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import kotlinx.android.parcel.Parcelize
 
 @JsonClass(generateAdapter = true)
+@Parcelize
 data class GetFoodByPriceResponseItem(
     @Json(name = "amount")
     val amount: Double,
@@ -55,4 +58,4 @@ data class GetFoodByPriceResponseItem(
     var time: Int = 0,
     @Json(name = "wtime")
     val wtime: String? = "아침",
-)
+) : Parcelable

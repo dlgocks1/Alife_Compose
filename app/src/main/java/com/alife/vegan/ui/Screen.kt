@@ -18,6 +18,12 @@ sealed class Screen(
     object Home :
         Screen("home", R.string.home_screen, R.drawable.ic_baseline_home_24)
 
+    object Detail :
+        Screen("detail", R.string.shoppgin_result)
+
+    object ShoppingResult :
+        Screen("shopping_result", R.string.shoppgin_result)
+
     object SettingGender :
         Screen("setting_gender", R.string.setting_gender_screen)
 

@@ -85,12 +85,12 @@ private fun VegunCategoryBtn(text: String, settingDietViewModel: SettingDietView
         modifier = Modifier.fillMaxWidth(1f),
         shape = RoundedCornerShape(5.dp),
         colors = ButtonDefaults.buttonColors(Color.White),
-        border = BorderStroke(1.dp, if (isSelected) Color_Alife_Cyan else Color(0xffd1d5da))
+        border = BorderStroke(1.dp, if (isSelected) Color_Alife_Cyan else Color.Gray)
     ) {
         Text(
             text = text,
             fontSize = 17.sp,
-            color = if (isSelected) Color_Alife_Cyan else Color_Alif_Gray,
+            color = if (isSelected) Color_Alife_Cyan else Color.Gray,
         )
     }
 }
