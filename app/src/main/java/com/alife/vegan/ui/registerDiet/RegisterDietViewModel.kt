@@ -25,6 +25,11 @@ class RegisterDietViewModel @Inject constructor(
     var listState = mutableStateOf(listOf("남은 예산"))
 
     var foodList = mutableStateListOf<GetFoodByPriceResponseItem>()
+    var recFoodList = mutableStateListOf<GetFoodByPriceResponseItem>()
+
+    fun getRecfoodList() {
+        recFoodList.addAll(foodList.filter { !it.isSelected }.shuffled().take(8))
+    }
 
     suspend fun registerDiet(
         shoppingList: MutableList<GetFoodByPriceResponseItem>,
@@ -86,6 +91,11 @@ class RegisterDietViewModel @Inject constructor(
     fun changeSelected(item: GetFoodByPriceResponseItem) {
         foodList.add(foodList.indexOf(item), item.copy(isSelected = !item.isSelected))
         foodList.remove(item)
+    }
+
+    fun changeRecSelected(item: GetFoodByPriceResponseItem) {
+        recFoodList.add(recFoodList.indexOf(item), item.copy(isSelected = !item.isSelected))
+        recFoodList.remove(item)
     }
 
     fun handleChangeBudget(budget: String) {

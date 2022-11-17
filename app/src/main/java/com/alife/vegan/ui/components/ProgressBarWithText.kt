@@ -14,16 +14,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.alife.vegan.ui.theme.Color_Alife_Green
+import com.alife.vegan.ui.theme.*
 
 
 @Composable
-fun ProgresBarWithText(infoList: List<String>) {
+fun ProgresBarWithText(
+    infoList: List<String>,
+    nowValue: List<Int> = listOf<Int>(20, 90, 5, 10, 4),
+    totalValue: List<Int> = listOf<Int>(100, 250, 67, 20, 10),
+    colorList: List<Color> = listOf(
+        Color_Alife_Green,
+        Color_Alife_Graph_Color1,
+        Color_Alife_Graph_Color2,
+        Color_Alife_Graph_Color3,
+        Color_Alife_Graph_Color4
+    )
+) {
     Column(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        infoList.map {
+        infoList.mapIndexed { idx, it ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -44,19 +55,22 @@ fun ProgresBarWithText(infoList: List<String>) {
                     Canvas(
                         modifier = Modifier
                             .fillMaxSize()
-                            .border(BorderStroke(1.dp, color = Color_Alife_Green))
+                            .border(BorderStroke(1.dp, color = colorList[idx]))
                     ) {
                         drawRect(
-                            color = Color_Alife_Green,
+                            color = colorList[idx],
                             size = Size(
-                                size.width * 0.7f, size.height // 얼마큼 채워져있는지 %로 표현
+                                size.width * nowValue[idx].toFloat() / totalValue[idx].toFloat(),
+                                size.height // 얼마큼 채워져있는지 %로 표현
                             )
                         )
                     }
                 }
             }
             Text(
-                text = "1250g / 7514g", fontSize = 12.sp, color = Color(0xFF474957)
+                text = "${nowValue[idx]}g / ${totalValue[idx]}g",
+                fontSize = 12.sp,
+                color = Color(0xFF474957)
             )
         }
     }

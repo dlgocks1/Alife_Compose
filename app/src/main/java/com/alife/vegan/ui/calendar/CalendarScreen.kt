@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,14 +37,14 @@ import kotlin.math.floor
 
 object Dummy {
     val dayList = listOf(
-        "Tue" to 11,
-        "Wed" to 12,
-        "Fri" to 13,
-        "Sat" to 14,
-        "Sun" to 15,
-        "Sat" to 16,
-        "Sun" to 17,
-        "Mon" to 18
+        "Tue" to 14,
+        "Wed" to 15,
+        "Fri" to 16,
+        "Sat" to 17,
+        "Sun" to 18,
+        "Sat" to 19,
+        "Sun" to 20,
+        "Mon" to 21
     )
 }
 
@@ -53,6 +54,10 @@ fun CalendarScreen(
     navController: NavController,
     viewModel: CalendarViewModel = hiltViewModel()
 ) {
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getDietList()
+    }
     val clickedDate = remember {
         mutableStateOf(dayList.first())
     }
@@ -204,7 +209,7 @@ fun DietListItem(item: String, itemList: List<GetFoodByPriceResponseItem>) {
                             )
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
-                                text = item.calory.toString(),
+                                text = "${item.calory}kcal",
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color(0xff707070)

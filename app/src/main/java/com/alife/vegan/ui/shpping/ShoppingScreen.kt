@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ import com.alife.vegan.R
 import com.alife.vegan.ui.components.CustomTextField
 import com.alife.vegan.ui.theme.Color_Alif_Gray
 import com.alife.vegan.ui.theme.Color_Alif_GrayBackground
+import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
 fun ShoppingScreen(
@@ -47,8 +49,11 @@ fun ShoppingScreen(
     shoppingViewModel: ShoppingViewModel = hiltViewModel()
 ) {
 
+    LaunchedEffect(key1 = Unit) {
+        shoppingViewModel.getFoodByPrice()
+    }
     val searchText = shoppingViewModel.searchText.value
-    val list = listOf("제품1", "제품2", "제품3", "제품4")
+//    val list = listOf("제품1", "제품2", "제품3", "제품4")
     val keyboardController = LocalSoftwareKeyboardController.current
 
     LazyColumn(
@@ -160,7 +165,7 @@ fun ShoppingScreen(
             )
         }
 
-        items(list.windowed(2, 2, true)) { item ->
+        items(shoppingViewModel.foodList.windowed(2, 2, true)) { item ->
             Row(
                 modifier = Modifier.padding(20.dp),
                 horizontalArrangement = Arrangement.spacedBy(15.dp)
@@ -169,15 +174,15 @@ fun ShoppingScreen(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.img_dummy),
+                    GlideImage(
+                        imageModel = item[0].product_image,
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
                             .aspectRatio(1f),
                         contentScale = ContentScale.Crop
                     )
-                    Text(text = item[0], fontSize = 14.sp)
+                    Text(text = item[0].product_name, fontSize = 14.sp)
                     Row {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_star_24),
@@ -210,21 +215,22 @@ fun ShoppingScreen(
                             tint = Color(0xF8FFC400)
                         )
                     }
-                    Text(text = "11,800원", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text(text = "${item[0].price}원", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.img_dummy),
+                    GlideImage(
+                        imageModel = item[1].product_image,
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
                             .aspectRatio(1f),
                         contentScale = ContentScale.Crop
                     )
-                    Text(text = item[1], fontSize = 14.sp)
+
+                    Text(text = item[1].product_name, fontSize = 14.sp)
                     Row {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_baseline_star_24),
@@ -258,7 +264,7 @@ fun ShoppingScreen(
                         )
                     }
 
-                    Text(text = "11,800원", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text(text = "${item[1].price}원", fontWeight = FontWeight.Bold, fontSize = 16.sp)
                 }
             }
         }

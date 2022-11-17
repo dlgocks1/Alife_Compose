@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -43,6 +44,10 @@ fun ShoppingResultScreen(
     val searchText = shoppingViewModel.searchText.value
     val keyboardController = LocalSoftwareKeyboardController.current
     val decimalFormat = DecimalFormat("#,###")
+
+    LaunchedEffect(key1 = Unit) {
+        shoppingViewModel.getTodayFood("두부")
+    }
 
     Column(
         modifier = Modifier
@@ -133,19 +138,19 @@ fun ShoppingResultScreen(
                         .padding(20.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
-                    Column() {
+                    Column(modifier = Modifier.widthIn(max = 130.dp)) {
                         Text(text = "오늘의 제품 추천", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = "금주의 식단을 분석하여\n최적의 제품을 추천합니다.",
+                            text = "금일의 건강식품으로\n두부(이)가 들어간 제품은 어떠신가요?",
                             fontSize = 12.sp,
                             color = Color.Gray
                         )
                     }
-                    for (i in 0..3) {
-                        Image(
+                    shoppingViewModel.todayFoodList.forEach {
+                        GlideImage(
+                            imageModel = it.product_image,
                             modifier = Modifier.size(180.dp, 190.dp),
-                            painter = painterResource(id = R.drawable.img_dummy),
                             contentDescription = null,
                             contentScale = ContentScale.Crop
                         )

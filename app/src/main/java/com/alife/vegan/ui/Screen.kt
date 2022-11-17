@@ -48,6 +48,9 @@ sealed class Screen(
     object RegisterDietFood :
         Screen("register_diet_food", R.string.registesr_diet_food)
 
+    object RegisterRecDietFood :
+        Screen("register_rec_diet_food", R.string.registesr_diet_food)
+
     object RegisterDietShoppingCart :
         Screen("register_diet_shopping_cart", R.string.register_diet_shopping_cart)
 

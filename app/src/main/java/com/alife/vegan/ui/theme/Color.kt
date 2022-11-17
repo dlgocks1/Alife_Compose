@@ -13,3 +13,8 @@ val Color_Alife_C4C4C4 = Color(0xffC4C4C4)
 val Color_Alif_Gray = Color(0xffd1d5da)
 val Color_Alif_GrayBackground = Color(0x07000000)
 val Color_Alif_707070 = Color(0xff707070)
+
+val Color_Alife_Graph_Color1 = Color(0xFF6FC7A9)
+val Color_Alife_Graph_Color2 = Color(0xFF78C895)
+val Color_Alife_Graph_Color3 = Color(0xFF6CC7B0)
+val Color_Alife_Graph_Color4 = Color(0xFF6CC7B0)

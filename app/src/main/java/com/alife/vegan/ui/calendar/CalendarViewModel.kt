@@ -23,7 +23,7 @@ class CalendarViewModel @Inject constructor(
         getDietList()
     }
 
-    private fun getDietList() = viewModelScope.launch {
+    fun getDietList() = viewModelScope.launch {
         repository.getDietList().collectLatest {
             it?.let {
                 _dietList.value = it

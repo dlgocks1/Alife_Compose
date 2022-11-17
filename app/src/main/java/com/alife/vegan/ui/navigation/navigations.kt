@@ -19,9 +19,10 @@ import com.alife.vegan.ui.calendar.CalendarViewModel
 import com.alife.vegan.ui.detail.DetailScreen
 import com.alife.vegan.ui.home.HomeScreen
 import com.alife.vegan.ui.onboard.RegisterDietBudgetScreen
-import com.alife.vegan.ui.onboard.RegisterDietFoodScreen
+import com.alife.vegan.ui.registerDiet.RegisterDietFoodScreen
 import com.alife.vegan.ui.onboard.RegisterShoppingCart
 import com.alife.vegan.ui.registerDiet.RegisterDietViewModel
+import com.alife.vegan.ui.registerDiet.RegisterRecDietFoodScreen
 import com.alife.vegan.ui.setting.*
 import com.alife.vegan.ui.shpping.ShoppingResultScreen
 import com.alife.vegan.ui.shpping.ShoppingScreen
@@ -41,7 +42,7 @@ fun NavGraphBuilder.mainGraph(
                 navController = navController
             )
         }
-        composable(Screen.Home.route) { HomeScreen() }
+        composable(Screen.Home.route) { HomeScreen(calendarViewModel) }
         composable(Screen.Shopping.route) { ShoppingScreen(navController, shoppingViewModel) }
         composable(Screen.ShoppingResult.route) {
             ShoppingResultScreen(navController, shoppingViewModel)
@@ -70,6 +71,13 @@ fun NavGraphBuilder.registerDiet(navController: NavController) {
             }
             val registerViewModel: RegisterDietViewModel = hiltViewModel(backStackEntry)
             RegisterDietFoodScreen(navController, registerViewModel)
+        }
+        composable(Screen.RegisterRecDietFood.route) { entry ->
+            val backStackEntry = remember(entry) {
+                navController.getBackStackEntry("RegisterDietGraph")
+            }
+            val registerViewModel: RegisterDietViewModel = hiltViewModel(backStackEntry)
+            RegisterRecDietFoodScreen(navController, registerViewModel)
         }
         composable(Screen.RegisterDietShoppingCart.route) { entry ->
             val backStackEntry = remember(entry) {
