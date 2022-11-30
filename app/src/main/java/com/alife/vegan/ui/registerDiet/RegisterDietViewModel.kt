@@ -3,17 +3,22 @@ package com.alife.vegan.ui.registerDiet
 import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.alife.vegan.domain.repository.FoodRepository
 import com.alife.vegan.domain.repository.RegisterDietRepository
 import com.alife.vegan.network.request.RegisterDietRequest
 import com.alife.vegan.network.request.RegisterDietRequestItem
+import com.alife.vegan.network.response.GetFoodByPriceResponse
 import com.alife.vegan.network.response.GetFoodByPriceResponseItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterDietViewModel @Inject constructor(
-    private val registerDietRepository: RegisterDietRepository
+    private val registerDietRepository: RegisterDietRepository,
+    private val foodRepository: FoodRepository
 ) : ViewModel() {
 
     private val _budget = mutableStateOf("")
@@ -23,12 +28,33 @@ class RegisterDietViewModel @Inject constructor(
     val isExpand: State<Boolean> = _isExpand
 
     var listState = mutableStateOf(listOf("남은 예산"))
+    var searchMode = mutableStateOf(false)
+    private val _searchText = mutableStateOf("")
+    val searchText: State<String> = _searchText
+//    private val _saerchFoodList: MutableState<GetFoodByPriceResponse?> = mutableStateOf(null)
+//    val saerchFoodList: State<GetFoodByPriceResponse?> = _saerchFoodList
 
     var foodList = mutableStateListOf<GetFoodByPriceResponseItem>()
+    var searchSelectedFoodList = mutableStateListOf<GetFoodByPriceResponseItem>()
     var recFoodList = mutableStateListOf<GetFoodByPriceResponseItem>()
 
     fun getRecfoodList() {
         recFoodList.addAll(foodList.filter { !it.isSelected }.shuffled().take(8))
+    }
+
+    fun handleTextChange(str: String) {
+        _searchText.value = str
+    }
+
+    fun searchFood() = viewModelScope.launch {
+        foodRepository.searchFood(productName = _searchText.value)
+            .collectLatest {
+                searchSelectedFoodList.clear()
+                it.forEach { item ->
+                    searchSelectedFoodList.add(item)
+                }
+                searchSelectedFoodList.sortedBy { it -> it.product_name }
+            }
     }
 
     suspend fun registerDiet(
@@ -86,6 +112,14 @@ class RegisterDietViewModel @Inject constructor(
             listState = mutableStateOf(listOf("남은 예산"))
         }
         _isExpand.value = !isExpand
+    }
+
+    fun addSearchFoods(item: GetFoodByPriceResponseItem) {
+        searchSelectedFoodList.add(
+            searchSelectedFoodList.indexOf(item),
+            item.copy(isSelected = !item.isSelected)
+        )
+        searchSelectedFoodList.remove(item)
     }
 
     fun changeSelected(item: GetFoodByPriceResponseItem) {

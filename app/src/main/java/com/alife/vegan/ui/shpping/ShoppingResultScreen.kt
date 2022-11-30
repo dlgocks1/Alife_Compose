@@ -2,7 +2,6 @@
 
 package com.alife.vegan.ui.shpping
 
-import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,7 +20,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -46,7 +44,7 @@ fun ShoppingResultScreen(
     val decimalFormat = DecimalFormat("#,###")
 
     LaunchedEffect(key1 = Unit) {
-        shoppingViewModel.getTodayFood("두부")
+        shoppingViewModel.getTodayFood("비건")
     }
 
     Column(
@@ -54,9 +52,9 @@ fun ShoppingResultScreen(
             .fillMaxSize(),
     ) {
         SearchTextField(searchText, shoppingViewModel, keyboardController)
-        if (shoppingViewModel.saerchFoodList.value != null) {
+        if (shoppingViewModel.searchFoodList.value != null) {
             Text(
-                text = "검색 결과 ${shoppingViewModel.saerchFoodList.value!!.size}개",
+                text = "검색 결과 ${shoppingViewModel.searchFoodList.value!!.size}개",
                 modifier = Modifier.padding(20.dp, 0.dp),
             )
         }
@@ -67,12 +65,12 @@ fun ShoppingResultScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            if (shoppingViewModel.saerchFoodList.value == null) {
+            if (shoppingViewModel.searchFoodList.value == null) {
                 item {
                     Text(text = "검색 결과가 없습니다.", fontSize = 18.sp)
                 }
-            } else if (shoppingViewModel.saerchFoodList.value!!.size > 0) {
-                items(shoppingViewModel.saerchFoodList.value!!.windowed(2, 2, true)) { item ->
+            } else if (shoppingViewModel.searchFoodList.value!!.size > 0) {
+                items(shoppingViewModel.searchFoodList.value!!.windowed(2, 2, true)) { item ->
                     Row(
                         modifier = Modifier.padding(20.dp),
                         horizontalArrangement = Arrangement.spacedBy(15.dp)
@@ -142,7 +140,7 @@ fun ShoppingResultScreen(
                         Text(text = "오늘의 제품 추천", fontSize = 16.sp, fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = "금일의 건강식품으로\n두부(이)가 들어간 제품은 어떠신가요?",
+                            text = "금일의 건강식품으로\n비건(이)가 들어간 제품은 어떠신가요?",
                             fontSize = 12.sp,
                             color = Color.Gray
                         )

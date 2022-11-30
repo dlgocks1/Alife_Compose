@@ -20,7 +20,7 @@ import com.alife.vegan.ui.theme.*
 @Composable
 fun ProgresBarWithText(
     infoList: List<String>,
-    nowValue: List<Int> = listOf<Int>(20, 90, 5, 10, 4),
+    nowValue: List<Int> = listOf<Int>(40, 120, 20, 6, 3),
     totalValue: List<Int> = listOf<Int>(100, 250, 67, 20, 10),
     colorList: List<Color> = listOf(
         Color_Alife_Green,

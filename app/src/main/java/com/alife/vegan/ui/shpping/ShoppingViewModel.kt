@@ -1,6 +1,5 @@
 package com.alife.vegan.ui.shpping
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
@@ -27,8 +26,8 @@ class ShoppingViewModel @Inject constructor(
     var foodList = mutableStateListOf<GetFoodByPriceResponseItem>()
     var todayFoodList = mutableStateListOf<GetFoodByPriceResponseItem>()
 
-    private val _saerchFoodList: MutableState<GetFoodByPriceResponse?> = mutableStateOf(null)
-    val saerchFoodList: State<GetFoodByPriceResponse?> = _saerchFoodList
+    private val _searchFoodList: MutableState<GetFoodByPriceResponse?> = mutableStateOf(null)
+    val searchFoodList: State<GetFoodByPriceResponse?> = _searchFoodList
 
     fun handleTextChange(str: String) {
         _searchText.value = str
@@ -64,7 +63,7 @@ class ShoppingViewModel @Inject constructor(
         foodRepository.searchFood(productName = _searchText.value)
             .collectLatest {
                 it.let {
-                    _saerchFoodList.value = it
+                    _searchFoodList.value = it
                 }
             }
     }

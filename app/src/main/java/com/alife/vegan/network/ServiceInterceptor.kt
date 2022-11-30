@@ -6,7 +6,7 @@ import okhttp3.Response
 
 class ServiceInterceptor : Interceptor {
     companion object {
-        var basic = Credentials.basic("hc4@naver.com", "testtest!")
+        var basic = Credentials.basic("hc7@naver.com", "testtest!")
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {

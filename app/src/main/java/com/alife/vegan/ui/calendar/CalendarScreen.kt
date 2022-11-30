@@ -37,14 +37,13 @@ import kotlin.math.floor
 
 object Dummy {
     val dayList = listOf(
-        "Tue" to 14,
-        "Wed" to 15,
-        "Fri" to 16,
-        "Sat" to 17,
-        "Sun" to 18,
-        "Sat" to 19,
-        "Sun" to 20,
-        "Mon" to 21
+        "Wed" to 30,
+        "Thur" to 31,
+        "Fri" to 1,
+        "Sat" to 2,
+        "Sun" to 3,
+        "Mon" to 4,
+        "Tue" to 5
     )
 }
 

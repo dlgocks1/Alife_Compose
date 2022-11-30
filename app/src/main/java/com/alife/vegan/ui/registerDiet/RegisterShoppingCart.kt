@@ -43,6 +43,12 @@ fun RegisterShoppingCart(
         registerDietViewModel.foodList.filter { it.isSelected }.map {
             shoppingList.add(it)
         }
+        registerDietViewModel.searchSelectedFoodList.filter { it.isSelected }.map {
+            shoppingList.add(it)
+        }
+        registerDietViewModel.recFoodList.filter { it.isSelected }.map {
+            shoppingList.add(it)
+        }
     }
 
     fun updateShoppingCart(index: Int, time: Int) {

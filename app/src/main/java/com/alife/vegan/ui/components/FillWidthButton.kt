@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FillWidthButton(onClick: () -> Unit) {
+fun FillWidthButton(text: String = "다음", onClick: () -> Unit) {
     Button(
         onClick = { onClick() },
         modifier = Modifier
@@ -22,7 +22,7 @@ fun FillWidthButton(onClick: () -> Unit) {
         shape = RoundedCornerShape(50)
     ) {
         Text(
-            text = "다음",
+            text = text,
             fontSize = 17.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,

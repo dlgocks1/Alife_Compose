@@ -38,6 +38,7 @@ fun RegisterRecDietFoodScreen(
         registerDietViewModel.getRecfoodList()
     }
 
+    
     Column() {
         Column(
             modifier = Modifier
@@ -84,7 +85,7 @@ fun RegisterRecDietFoodScreen(
 
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(text = "넣을수록 이득인 음식", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                    Text(text = "자연실록 한끼 쎄트", fontSize = 15.sp, color = Color_Alif_Gray)
+                    Text(text = "장바구니 제품을 기반으로 추천해드려요.", fontSize = 15.sp, color = Color_Alif_Gray)
                 }
                 // 추천 리스트
                 Card(
