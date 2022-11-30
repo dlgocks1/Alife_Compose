@@ -109,8 +109,8 @@ fun RegisterDietFoodScreen(
                     }
                 }
 
+                Text(text = "검색하여 음식 추가하기")
             }
-
         }
         Row(
             modifier = Modifier
@@ -120,7 +120,9 @@ fun RegisterDietFoodScreen(
         ) {
             Text(
                 text = "Total : ${
-                    registerDietViewModel.foodList.filter { it.isSelected }.sumOf { it.calory }
+                    String.format(
+                        "@.2f",
+                        registerDietViewModel.foodList.filter { it.isSelected }.sumOf { it.calory })
                 }kcal",
                 modifier = Modifier.padding(20.dp, 10.dp),
                 color = Color.White
